@@ -6,8 +6,6 @@ import { PublicLayout } from "~/components/layout/PublicLayout";
 import { withSession } from "~/server/auth/withSession";
 import { api } from "~/utils/api";
 
-export const getServerSideProps = withSession({ force: true });
-
 export default function Home() {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 

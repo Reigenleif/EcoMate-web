@@ -85,14 +85,14 @@ export const SignIn = ({ csrfToken }: SignInProps) => {
 
               <Flex w="100%" flexDir="column" mt="1em">
                 <Button type="submit" w="50%" m="auto">
-                  Sign In with Email
+                  Sign In
                 </Button>
-                <Button m="auto" mt="1em" w="50%" onClick={googleSignIn}>
+                {/* <Button m="auto" mt="1em" w="50%" onClick={googleSignIn}>
                   Sign In with Google
-                </Button>
+                </Button> */}
               </Flex>
 
-              <Flex pos="relative" p="10" alignItems="center">
+              {/* <Flex pos="relative" p="10" alignItems="center">
                 <Divider color="black" />
                 <AbsoluteCenter
                   bg="white"
@@ -107,7 +107,7 @@ export const SignIn = ({ csrfToken }: SignInProps) => {
                 <Button onClick={() => router.push("/signup")} w="50%" m="auto">
                   Sign Up
                 </Button>
-              </Flex>
+              </Flex> */}
             </FormControl>
           </form>
           {session ? <Text>Logged in as {session.user.email}</Text> : <Text>Not logged in</Text>}

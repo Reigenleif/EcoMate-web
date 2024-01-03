@@ -15,7 +15,7 @@ datasource db {
 }
 
 enum UserRole {
-    PARTICIPANT
+    COSTUMER
     ADMIN
 }
 
@@ -65,11 +65,12 @@ model User {
     hashPassword  String?
     imageUrl      String?
 
-    role UserRole @default(PARTICIPANT)
+    role UserRole @default(COSTUMER)
 
     accounts        Account[]
     sessions        Session[]
-    ParticipantData ParticipantData[]
+    NewsComment     NewsComment[]
+    Cart            Cart[]
 }
 
 model VerificationToken {
@@ -80,16 +81,118 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model ParticipantData {
-    id String @id @default(cuid())
+// News Feature Schemas
+model News {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
+    title       String
+    description String
+    content     String
+    imageUrl    String
+    author      String
+    isPublished Boolean       @default(false)
+    NewsComment NewsComment[]
+}
+
+model NewsComment {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    content String
+
+    newsId String
     userId String
 
-    fullName    String?
-    address     String?
-    city        String?
-    zip         String?
-    isSubmitted Boolean @default(false)
-
+    news News @relation(fields: [newsId], references: [id], onDelete: Cascade)
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Flashcard Feature Schemas
+model Flashcard {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    title       String
+    description String
+    imageUrl    String
+    isPublished Boolean @default(false)
+}
+
+// Carbon Footprint Calculator Schemas
+model CarbonFootprintAttribute {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String
+    description String
+    unit        String
+}
+
+model CarbonFootprintFormula {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String
+    description String
+    formula     String
+    unit        String
+}
+
+// Marketplace Schemas - Item list
+model Category {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String
+    description String
+    Item        Item[]
+}
+
+model Item {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String
+    description String
+    price       Float
+    imageUrl    String
+    isPublished Boolean @default(false)
+
+    categoryId String
+    Category   Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    CartItem   CartItem[]
+}
+
+// Marketplace Schemas - Cart
+model Cart {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+    User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    CartItem CartItem[]
+}
+
+model CartItem {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    quantity Int
+
+    cartId String
+    Cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+    itemId String
+    Item   Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }

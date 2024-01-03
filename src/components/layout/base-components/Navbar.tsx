@@ -18,17 +18,17 @@ export const Navbar = ({ type }: NavbarProps) => {
       alignItems="center"
       mb="1em"
     >
-      <Text onClick={() => router.push("/")}> Hello </Text>
+      <Text onClick={() => router.push("/")}> EcoMate - Sustainabiliy App</Text>
       {!!session ? (
         <Menu>
             <MenuButton>{session.user.name ? `Hello, ${session.user.name.split(' ')[0]}` : "Hello" }</MenuButton>
             <MenuList>
-                <Button onClick={() => router.push('/profile')}>Profile</Button>
-                <Button onClick={() => router.push('/api/auth/signout')}>Sign Out</Button>
+                <Button variant="ghost" onClick={() => router.push('/profile')}>Profile</Button>
+                <Button variant="ghost" onClick={() => router.push('/api/auth/signout')}>Sign Out</Button>
             </MenuList>
         </Menu>
       ) : type !== "signin" ? (
-        <Button onClick={() => signIn()}> Sign In </Button>
+        <Button onClick={() => signIn()} variant="ghost"> Sign In </Button>
       ) : (
         <Box />
       )}
