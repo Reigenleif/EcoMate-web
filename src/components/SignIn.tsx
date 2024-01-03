@@ -15,6 +15,9 @@ import { getCsrfToken, signIn, useSession } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import { PasswordInput } from "~/utils/elements/PasswordInput";
+import { AddItemModal } from "./item-tooling/AddItemModal";
+import { EditItemModal } from "./item-tooling/EditItemModal";
+import { DeleteItemModal } from "./item-tooling/DeleteItemModal";
 
 interface SignInProps {
   csrfToken: string;
