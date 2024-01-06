@@ -9,6 +9,7 @@ export const StringInput = <FormValues extends FieldValues>({
     error,
     desc,
     isFrozen = false,
+    type = "text",
   }: {
     field: Path<FormValues>;
     title: string | null;
@@ -16,6 +17,7 @@ export const StringInput = <FormValues extends FieldValues>({
     error: FieldErrors<FormValues>[Path<FormValues>];
     desc?: string | null;
     isFrozen?: boolean;
+    type?: "text" | "number";
   }) => (
     <>
       <Text color="blue.100" fontWeight="bold" fontSize="xl">
@@ -27,7 +29,7 @@ export const StringInput = <FormValues extends FieldValues>({
         </Text>
       )}
       <Input
-        type="text"
+        type={type}
         mx="auto"
         {...register(field)}
         borderColor={error?.message ? "salmon" : undefined}

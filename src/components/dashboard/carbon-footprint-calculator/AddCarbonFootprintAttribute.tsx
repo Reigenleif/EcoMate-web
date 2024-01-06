@@ -7,50 +7,43 @@ import { z } from "zod";
 import { StringInput } from "~/components/form/StringInput";
 import { uuid } from "uuidv4";
 import { ParagraphInput } from "~/components/form/ParagraphInput";
-import { Button, Flex, FormControl, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, Text } from "@chakra-ui/react";
 import { FileInput } from "~/components/form/FileInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AllowableFileTypeEnum } from "~/utils/file";
 
 const schema = z.object({
-  title: z.string().min(1),
-  description: z.string().min(1),
+  name: z.string().nonempty(),
+  description: z.string().nonempty(),
+  coefficient: z.string(),
+  unit: z.string().nonempty(),
 });
 
 type FormValues = z.infer<typeof schema>;
 
-interface AddFlashcardProps {
-  onCreateItem: (data: RouterInputs["admin"]["flashcard"]["createFlashcard"]) => Promise<void>;
+interface AddCarbonFootprintAttributesProps {
+  onCreateItem: (
+    data: RouterInputs["admin"]["carbonFootprintCalculator"]["createCarbonFootprintAttribute"]
+  ) => Promise<void>;
 }
 
-export const AddFlashcard = ({ onCreateItem }: AddFlashcardProps) => {
+export const AddCarbonFootprintAttribute = ({
+  onCreateItem,
+}: AddCarbonFootprintAttributesProps) => {
   const { register, formState, handleSubmit, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
 
-  const imageState = useState<File | null | undefined>(null);
-
-  const { uploader } = useUploader();
-
   const onAddItem = handleSubmit(async (data) => {
-    const Image = imageState[0];
-    const filename = Image
-      ? "flashcard/" + uuid() + "." + Image.name.split(".").pop()
-      : "";
-
-    let imageUrl: string | undefined;
-    if (Image) {
-      const res = await uploader(Image, filename, Image?.type);
-      imageUrl = res?.url;
-    }
-
+    const coefficient = parseFloat(data.coefficient);
     await onCreateItem({
-      title: data.title,
+      name: data.name,
       description: data.description,
-      imageUrl,
+      coefficient: coefficient,
+      unit: data.unit,
     }).then(() => {
       reset()
-    });
+    });;
   });
 
   return (
@@ -59,22 +52,36 @@ export const AddFlashcard = ({ onCreateItem }: AddFlashcardProps) => {
         <FormControl>
           <Flex flexDir="column" gap="1em">
             <StringInput
-              title="Title"
-              field="title"
+              field="name"
+              title="Name"
               register={register}
-              error={formState.errors.title}
+              error={formState.errors.name}
             />
             <ParagraphInput
-              title="Description"
               field="description"
+              title="Description"
               register={register}
               error={formState.errors.description}
             />
-            <Text> Add Image</Text>
-            <FileInput
-              fileStateArr={imageState}
-              allowed={[AllowableFileTypeEnum.PICTURES]}
-            />
+            <Flex gap="1em">
+              <Box w="70%">
+                <StringInput
+                  type="number"
+                  field="coefficient"
+                  title="Coefficient"
+                  register={register}
+                  error={formState.errors.coefficient}
+                />
+              </Box>
+              <Box w="30%">
+                <StringInput
+                  field="unit"
+                  title="Unit"
+                  register={register}
+                  error={formState.errors.unit}
+                />
+              </Box>
+            </Flex>
           </Flex>
         </FormControl>
       </form>

@@ -5,6 +5,7 @@ import { profileRouter } from "./routers/profile";
 import { newsRouter } from "./routers/news";
 import { flashcardRouter } from "./routers/flashcard";
 import { marketPlaceRouter } from "./routers/marketplace";
+import { carbonFootprintCalculatorRouter } from "./routers/carbon-footprint-calculator";
 
 /**
  * This is the primary router for your server.
@@ -19,6 +20,7 @@ export const appRouter = createTRPCRouter({
     news: newsRouter,
     flashcard: flashcardRouter,
     marketplace: marketPlaceRouter,
+    carbonFootprintCalculator: carbonFootprintCalculatorRouter
   }),
 });
 

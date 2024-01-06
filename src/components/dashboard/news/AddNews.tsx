@@ -25,7 +25,7 @@ interface AddNewsProps {
 }
 
 export const AddNews = ({ onCreateItem }: AddNewsProps) => {
-  const { register, formState, handleSubmit } = useForm<FormValues>({
+  const { register, formState, handleSubmit, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
 
@@ -49,7 +49,9 @@ export const AddNews = ({ onCreateItem }: AddNewsProps) => {
       title: data.title,
       content: data.content,
       imageUrl,
-    });
+    }).then(() => {
+      reset()
+    });;
   });
 
   return (

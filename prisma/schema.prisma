@@ -130,6 +130,7 @@ model CarbonFootprintAttribute {
     name        String
     description String
     unit        String
+    coefficient Float
 }
 
 model CarbonFootprintFormula {
