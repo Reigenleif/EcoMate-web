@@ -2,27 +2,27 @@ import { z } from "zod";
 import { adminProcedure, createTRPCRouter } from "../trpc";
 import { TRPCError } from "@trpc/server";
 
-export const flashCardRouter = createTRPCRouter({
+export const flashcardRouter = createTRPCRouter({
   getFlashcardList: adminProcedure.query(async ({ ctx }) => {
-    const flashCardList = await ctx.prisma.flashcard.findMany({
+    const flashcardList = await ctx.prisma.flashcard.findMany({
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return flashCardList;
+    return flashcardList;
   }),
 
   getFlashcardById: adminProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      const flashCard = await ctx.prisma.flashcard.findUnique({
+      const flashcard = await ctx.prisma.flashcard.findUnique({
         where: { id: input.id },
       });
 
-      if (!flashCard) throw new TRPCError({ code: "NOT_FOUND" });
+      if (!flashcard) throw new TRPCError({ code: "NOT_FOUND" });
 
-      return flashCard;
+      return flashcard;
     }),
   createFlashcard: adminProcedure
     .input(
@@ -33,7 +33,7 @@ export const flashCardRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const flashCard = await ctx.prisma.flashcard.create({
+      const flashcard = await ctx.prisma.flashcard.create({
         data: {
           title: input.title,
           description: input.description,
@@ -41,7 +41,7 @@ export const flashCardRouter = createTRPCRouter({
         },
       });
 
-      return flashCard;
+      return flashcard;
     }),
 
   updateFlashcard: adminProcedure
@@ -55,7 +55,7 @@ export const flashCardRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const flashCard = await ctx.prisma.flashcard.update({
+      const flashcard = await ctx.prisma.flashcard.update({
         where: { id: input.id },
         data: {
           title: input.title,
@@ -65,16 +65,16 @@ export const flashCardRouter = createTRPCRouter({
         },
       });
 
-      return flashCard;
+      return flashcard;
     }),
 
   deleteFlashcard: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const flashCard = await ctx.prisma.flashcard.delete({
+      const flashcard = await ctx.prisma.flashcard.delete({
         where: { id: input.id },
       });
 
-      return flashCard;
+      return flashcard;
     }),
 });

@@ -3,7 +3,7 @@ import { userRouter } from "./routers/user";
 import { storageRouter } from "./routers/storage";
 import { profileRouter } from "./routers/profile";
 import { newsRouter } from "./routers/news";
-import { flashCardRouter } from "./routers/flashcard";
+import { flashcardRouter } from "./routers/flashcard";
 import { marketPlaceRouter } from "./routers/marketplace";
 
 /**
@@ -17,7 +17,7 @@ export const appRouter = createTRPCRouter({
   profile: profileRouter,
   admin: createTRPCRouter({
     news: newsRouter,
-    flashcard: flashCardRouter,
+    flashcard: flashcardRouter,
     marketplace: marketPlaceRouter,
   }),
 });
