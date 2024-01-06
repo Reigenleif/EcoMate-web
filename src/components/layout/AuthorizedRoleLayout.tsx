@@ -9,15 +9,19 @@ export const AuthorizedRoleLayout = ({
 }: ProtectedLayoutProps) => {
   const router = useRouter();
 
-  useEffect(() => {
-    authCheck();
-  }, []);
+  
 
-  const authCheck = () => {
-    if (!session) {
-      void router.push("/");
-    }
-  };
+  useEffect(() => {
+    const authCheck = () => {
+      if (!session) {
+        void router.push("/");
+      }
+    };
+
+    authCheck();
+  });
+
+  
 
   return <BaseLayout>{ children }</BaseLayout>;
 };

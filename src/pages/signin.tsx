@@ -11,6 +11,8 @@ export default function Signin({
   const { data: session, status } = useSession();
   const router = useRouter();
 
+  console.log(csrfToken)
+
   if (status === "authenticated") {
     router.push("/");
   }

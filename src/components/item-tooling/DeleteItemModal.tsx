@@ -50,7 +50,7 @@ export function DeleteItemModal({
           <ModalCloseButton />
           <ModalHeader>{title}</ModalHeader>
           <ModalBody>
-            Are you sure you want to delete <b>{displayText}</b>
+            Are you sure you want to delete <b>{displayText}</b> ?
           </ModalBody>
           <ModalFooter>
             <Flex alignItems="center" justifyContent="right" gap="1em" w="100%">

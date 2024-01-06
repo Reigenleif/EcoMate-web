@@ -47,22 +47,22 @@ export const storageRouter = createTRPCRouter({
   generateURLForUpload: protectedProcedure
     .input(
       z.object({
-        folder: z.union([
-          z.literal(FolderEnum.PROFILE),
-          z.literal(FolderEnum.DOCUMENT),
-        ]),
         filename: z.string(),
         contentType: z.union([
           z.literal(AllowableFileTypeEnum.PDF),
+          z.literal(AllowableFileTypeEnum.JPEG),
           z.literal(AllowableFileTypeEnum.PNG),
-          z.literal(AllowableFileTypeEnum.JPEG)
-        ])
-      })
+          z.literal(AllowableFileTypeEnum.MP4),
+          z.literal(AllowableFileTypeEnum.ZIP),
+          z.literal(AllowableFileTypeEnum.PICTURES),
+        ]),
+      }),
     )
     .mutation(async ({ input }) => {
       // const fileUUID = uuidv4(); // Uncomment this if you want to use UUID for filename
       const sanitizedFileName = sanitize(input.filename);
-      const sanitizedFilename = `${sanitizedFileName}`; // Put UUID here if its enabled
+      const sanitizedFilename = input.filename
+      // const sanitizedFilename = `${sanitizedFileName}`; // Put UUID here if its enabled
       
 
       await bucket.setCorsConfiguration([
@@ -74,7 +74,7 @@ export const storageRouter = createTRPCRouter({
         }
       ]);
 
-      const ref = bucket.file(`${input.folder}/${sanitizedFilename}`);
+      const ref = bucket.file(`${sanitizedFilename}`);
 
       const [url] = await ref.getSignedUrl({
         version: "v4",

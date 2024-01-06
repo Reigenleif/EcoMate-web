@@ -16,7 +16,8 @@ export enum AllowableFileTypeEnum {
   PNG = "image/png",
   JPEG = "image/jpeg",
   ZIP = "application/zip",
-  PICTURES = "image/*"
+  PICTURES = "image/*",
+  MP4 = "video/mp4"
 }
 
 export const uploadFile = async (

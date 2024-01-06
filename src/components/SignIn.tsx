@@ -52,6 +52,7 @@ export const SignIn = ({ csrfToken }: SignInProps) => {
   };
 
   const onSignIn = (e: FormEvent<HTMLFormElement>) => {
+    console.log({ emailInput, passwordInput, redirect: true, csrfToken })
     e.preventDefault();
     credentialSignIn(emailInput, passwordInput);
   };

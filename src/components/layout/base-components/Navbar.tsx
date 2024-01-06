@@ -15,8 +15,9 @@ export const Navbar = ({ type }: NavbarProps) => {
       justifyContent="space-between"
       px="2em"
       py="0.5em"
+      minH="3em"
       alignItems="center"
-      mb="1em"
+      boxShadow="3px 3px 0px 0px rgba(0,0,0,0.2)"
     >
       <Text onClick={() => router.push("/")}> EcoMate - Sustainabiliy App</Text>
       {!!session ? (

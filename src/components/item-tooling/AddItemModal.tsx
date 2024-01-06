@@ -14,6 +14,8 @@ import {
 } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
 
+
+
 interface AddItemModalProps {
   title: string;
   onAddItem: () => Promise<void>;
@@ -30,11 +32,12 @@ export function AddItemModal({
   return (
     <>
       <Button
-        h="3em"
+        h="3.5em"
         borderRadius="1.5em"
         transition="all 0.2s ease-out"
         bg="blue.100"
         w="fit-content"
+        px="2em"
         color="white"
         onClick={onOpen}
         border="none"
@@ -42,7 +45,7 @@ export function AddItemModal({
           bg: "blue.200",
         }}
       >
-        <MdAdd size="1.5em" />
+        <MdAdd size="2em" />
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

@@ -8,7 +8,7 @@ const defaultInput: SystemStyleFunction = () => {
       border: '2px solid',
       borderColor: 'gray.400',
       bg: 'whiteCream',
-      color: 'blue',
+      color: 'blue.100',
       _hover: {
         borderColor: 'gray.500'
       },

@@ -67,10 +67,11 @@ model User {
 
     role UserRole @default(COSTUMER)
 
-    accounts        Account[]
-    sessions        Session[]
-    NewsComment     NewsComment[]
-    Cart            Cart[]
+    accounts    Account[]
+    sessions    Session[]
+    NewsComment NewsComment[]
+    Cart        Cart[]
+    Item        Item[]
 }
 
 model VerificationToken {
@@ -87,11 +88,9 @@ model News {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    title       String
-    description String
-    content     String
-    imageUrl    String
-    author      String
+    title       String?
+    imageUrl    String?
+    content     String?
     isPublished Boolean       @default(false)
     NewsComment NewsComment[]
 }
@@ -118,7 +117,7 @@ model Flashcard {
 
     title       String
     description String
-    imageUrl    String
+    imageUrl    String?
     isPublished Boolean @default(false)
 }
 
@@ -163,12 +162,15 @@ model Item {
     name        String
     description String
     price       Float
-    imageUrl    String
+    imageUrl    String?
     isPublished Boolean @default(false)
 
     categoryId String
     Category   Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     CartItem   CartItem[]
+
+    userId String
+    User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // Marketplace Schemas - Cart

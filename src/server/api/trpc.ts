@@ -120,12 +120,12 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
-const isParticipant = t.middleware(({ ctx, next}) => {
+const isCostumer = t.middleware(({ ctx, next}) => {
   if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  if (ctx.session?.user?.role !== UserRole.PARTICIPANT) {
+  if (ctx.session?.user?.role !== UserRole.COSTUMER) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
@@ -161,5 +161,5 @@ const isAdmin = t.middleware(({ ctx, next}) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
-export const participantProcedure = t.procedure.use(enforceUserIsAuthed).use(isParticipant);
+export const participantProcedure = t.procedure.use(enforceUserIsAuthed).use(isCostumer);
 export const adminProcedure = t.procedure.use(enforceUserIsAuthed).use(isAdmin);
