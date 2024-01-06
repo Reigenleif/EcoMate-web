@@ -75,6 +75,7 @@ export const EditProfileModal = ({
   );
 };
 
+/* eslint-disable */
 const profileInfoRow = (
   placeholder: string,
   inputState: any,

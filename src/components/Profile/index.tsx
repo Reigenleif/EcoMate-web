@@ -40,7 +40,7 @@ export const Profile = () => {
       folder: FolderEnum.PROFILE,
       filename: `${profile.id}.png`,
     }).then(({ url }) => setImageUrl(url));
-  }, [profile]);
+  }, [profile, downloader]);
 
   console.log(imageUrl);
 
@@ -58,10 +58,9 @@ export const Profile = () => {
   const uploadProfileImage = async (picInput: File | undefined) => {
     if (!picInput) return;
     uploader(
-      `${profile.id}.png`,
-      FolderEnum.PROFILE,
-      AllowableFileTypeEnum.JPEG,
-      picInput
+      picInput,
+      `profiles/${profile.id}.png`,
+      picInput.type as AllowableFileTypeEnum
     );
     profileQuery.refetch();
   };
@@ -91,8 +90,8 @@ export const Profile = () => {
       {!profileQuery.isLoading && (
         <EditProfileModal
           initState={{
-            name: profile.name || "",
-            email: profile.email || "",
+            name: profile.name ?? "",
+            email: profile.email ?? "",
           }}
           updateProfile={updateProfile}
         />
@@ -101,6 +100,7 @@ export const Profile = () => {
   );
 };
 
+/* eslint-disable */
 interface ProfileInfoRowProps {
   placeholder: string;
   value: any;

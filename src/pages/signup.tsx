@@ -8,7 +8,7 @@ export default function Signup({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <PublicLayout>
-      <SignUp csrfToken={csrfToken || ""} />
+      <SignUp csrfToken={csrfToken ?? ""} />
     </PublicLayout>
   );
 }

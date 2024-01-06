@@ -45,7 +45,7 @@ export function EditItemModal({
         <ModalOverlay />
         <ModalContent maxW="min(95%, 40em)">
           <ModalCloseButton />
-          <ModalHeader>{title}</ModalHeader>
+          <ModalHeader fontWeight="bold">{title}</ModalHeader>
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
             <Flex alignItems="center" justifyContent="right" gap="1em" w="100%">

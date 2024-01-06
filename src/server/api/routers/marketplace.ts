@@ -29,7 +29,7 @@ export const marketPlaceRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string().min(1),
-        description: z.string().min(1),
+        description: z.string().optional(),
         imageUrl: z.string().optional(),
       })
     )
@@ -49,7 +49,7 @@ export const marketPlaceRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         name: z.string().min(1),
-        description: z.string().min(1),
+        description: z.string().optional(),
         imageUrl: z.string().optional(),
         isPublished: z.boolean().optional(),
       })
@@ -119,7 +119,7 @@ export const marketPlaceRouter = createTRPCRouter({
           price: input.price,
           imageUrl: input.imageUrl,
           categoryId: input.categoryId,
-          userId: ctx.session.user.id
+          userId: ctx.session.user.id,
         },
       });
 
@@ -132,6 +132,7 @@ export const marketPlaceRouter = createTRPCRouter({
         id: z.string(),
         name: z.string().min(1),
         description: z.string().min(1),
+        price: z.number().min(1),
         imageUrl: z.string().optional(),
         isPublished: z.boolean().optional(),
       })
@@ -142,7 +143,19 @@ export const marketPlaceRouter = createTRPCRouter({
         data: {
           name: input.name,
           description: input.description,
+          price: input.price,
+          imageUrl: input.imageUrl,
         },
+      });
+
+      return item;
+    }),
+
+  deleteItem: adminProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const item = await ctx.prisma.item.delete({
+        where: { id: input.id },
       });
 
       return item;

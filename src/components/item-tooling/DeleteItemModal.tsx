@@ -48,7 +48,7 @@ export function DeleteItemModal({
         <ModalOverlay />
         <ModalContent maxW="min(95%, 40em)">
           <ModalCloseButton />
-          <ModalHeader>{title}</ModalHeader>
+          <ModalHeader fontWeight="bold">{title}</ModalHeader>
           <ModalBody>
             Are you sure you want to delete <b>{displayText}</b> ?
           </ModalBody>

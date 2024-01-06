@@ -70,8 +70,8 @@ export default function CarbonFootprintAttributeDashboardPage() {
           <Loading />
         ) : CarbonFootprintAttributeList?.length > 0 ? (
           <Flex flexDir="column" w="100%" p="1em" gap="1em">
-            <Text textAlign="left" w="100%">
-              Published CarbonFootprintAttribute :
+            <Text textAlign="left" w="100%" fontWeight="bold">
+              Published Carbon Footprint Attribute :
             </Text>
 
             <Flex flexWrap="wrap" gap="1em">
@@ -86,7 +86,7 @@ export default function CarbonFootprintAttributeDashboardPage() {
             </Flex>
           </Flex>
         ) : (
-          <Text mx="auto" mt="5em">
+          <Text mx="auto" mt="5em" fontWeight="bold">
             No carbon footprint attribute added, click on the + button to add
             one
           </Text>

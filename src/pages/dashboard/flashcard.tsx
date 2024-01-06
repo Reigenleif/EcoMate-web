@@ -66,7 +66,7 @@ export default function FlashcardDashboardPage() {
           <Loading />
         ) : FlashcardList?.length > 0 ? (
           <Flex flexDir="column" w="100%" p="1em" gap="1em">
-            <Text textAlign="left" w="100%">
+            <Text textAlign="left" w="100%" fontWeight="bold">
               Published Flashcard :
             </Text>
 
