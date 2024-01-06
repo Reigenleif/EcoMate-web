@@ -12,7 +12,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import { MdCamera } from "react-icons/md";
+import { MdCamera, MdPhoto } from "react-icons/md";
 import { CustomCard } from "~/components/common/CustomCard";
 import { Loading } from "~/components/common/Loading";
 import { DashboardSideNav } from "~/components/dashboard/SideNav";
@@ -31,21 +31,30 @@ export default function NewsDashboardPage() {
   const updateNewsMutation = api.admin.news.updateNews.useMutation();
   const deleteNewsMutation = api.admin.news.deleteNews.useMutation();
 
-  const onCreateItem = async (data: RouterInputs["admin"]["news"]["createNews"]) => {
-    await createNewsMutation.mutateAsync(data).then(() => getNewsQuery.refetch());
+  const onCreateItem = async (
+    data: RouterInputs["admin"]["news"]["createNews"]
+  ) => {
+    await createNewsMutation
+      .mutateAsync(data)
+      .then(() => getNewsQuery.refetch());
     return;
-  }
+  };
 
-  const onUpdateItem = async (data: RouterInputs["admin"]["news"]["updateNews"]) => {
-    await updateNewsMutation.mutateAsync(data).then(() => getNewsQuery.refetch());
+  const onUpdateItem = async (
+    data: RouterInputs["admin"]["news"]["updateNews"]
+  ) => {
+    await updateNewsMutation
+      .mutateAsync(data)
+      .then(() => getNewsQuery.refetch());
     return;
-  }
+  };
 
-  const onDeleteItem = async (data: RouterInputs["admin"]["news"]["deleteNews"]) => {
-    await deleteNewsMutation.mutateAsync(data).then(() => getNewsQuery.refetch());
+  const onDeleteItem = (id: string) => async () => {
+    await deleteNewsMutation
+      .mutateAsync({id})
+      .then(() => getNewsQuery.refetch());
     return;
-  }
-    
+  };
 
   const newsList = getNewsQuery.data;
 
@@ -58,7 +67,7 @@ export default function NewsDashboardPage() {
         ) : newsList?.length > 0 ? (
           <Flex flexDir="column" w="100%" p="1em" gap="1em">
             <Text textAlign="left" w="100%">
-              News List :
+              Published News :
             </Text>
 
             <Flex flexWrap="wrap" gap="1em">
@@ -66,8 +75,8 @@ export default function NewsDashboardPage() {
                 <ItemBox
                   key={item.id}
                   item={item}
-                  updateNewsMutation={updateNewsMutation}
-                  deleteNewsMutation={deleteNewsMutation}
+                  onDeleteItem={onDeleteItem(item.id)}
+                  onUpdateItem={onUpdateItem}
                 />
               ))}
             </Flex>
@@ -78,7 +87,7 @@ export default function NewsDashboardPage() {
           </Text>
         )}
         <Box pos="fixed" left="calc(100vw - 8em)" top="calc(100vh - 8em)">
-          <AddNews createItemMutation={createNewsMutation} />
+          <AddNews onCreateItem={onCreateItem} />
         </Box>
       </Flex>
     </AdminRoleLayout>
@@ -87,33 +96,29 @@ export default function NewsDashboardPage() {
 
 interface ItemBoxProps {
   item: RouterOutputs["admin"]["news"]["getNews"][0];
-  updateNewsMutation: ReturnType<typeof api.admin.news.updateNews.useMutation>;
-  deleteNewsMutation: ReturnType<typeof api.admin.news.deleteNews.useMutation>;
+  onUpdateItem: (
+    data: RouterInputs["admin"]["news"]["updateNews"]
+  ) => Promise<void>;
+  onDeleteItem: () => Promise<void>;
 }
 
-const ItemBox = ({
-  item,
-  updateNewsMutation,
-  deleteNewsMutation,
-}: ItemBoxProps) => {
-  const onDeleteItem = async () => {
-    await deleteNewsMutation.mutateAsync({ id: item.id });
-    return;
-  };
+const ItemBox = ({ item, onDeleteItem, onUpdateItem }: ItemBoxProps) => {
 
   return (
-    <CustomCard>
+    <CustomCard gap="0.3em">
       {item.imageUrl ? (
         <Img src={item.imageUrl} h="8em" w="8em" objectFit="cover" />
       ) : (
-        <Box bg="gray" h="5em" w="3em">
-          <MdCamera />
-        </Box>
+        <Flex justifyContent="center" alignItems="center" bg="gray" h="8em" w="8em">
+          <MdPhoto />
+        </Flex>
       )}
       <Text>{item.title}</Text>
-      <Text fontSize="0.7em" textAlign="justify">{item.content}</Text>
-      <Flex flexDir="row" alignItems="center">
-        <EditNews item={item} updateItemMutation={updateNewsMutation} />
+      <Text fontSize="0.7em" textAlign="justify" noOfLines={3}>
+        {item.content}
+      </Text>
+      <Flex flexDir="row" alignItems="center" gap="1em">
+        <EditNews item={item} onUpdateItem={onUpdateItem}/>
         <DeleteItemModal
           title="Delete News"
           displayText={item.title ?? "This Item"}

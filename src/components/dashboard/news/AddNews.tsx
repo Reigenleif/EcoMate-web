@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { RouterInputs, RouterOutputs, api } from "~/utils/api";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { AddItemModal } from "~/components/item-tooling/AddItemModal";
@@ -21,10 +21,10 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 interface AddNewsProps {
-  createItemMutation: ReturnType<typeof api.admin.news.createNews.useMutation>;
+  onCreateItem: (data: RouterInputs["admin"]["news"]["createNews"]) => Promise<void>;
 }
 
-export const AddNews = ({ createItemMutation }: AddNewsProps) => {
+export const AddNews = ({ onCreateItem }: AddNewsProps) => {
   const { register, formState, handleSubmit } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
@@ -45,7 +45,7 @@ export const AddNews = ({ createItemMutation }: AddNewsProps) => {
       imageUrl = res?.url;
     }
 
-    await createItemMutation.mutateAsync({
+    await onCreateItem({
       title: data.title,
       content: data.content,
       imageUrl,
@@ -54,7 +54,7 @@ export const AddNews = ({ createItemMutation }: AddNewsProps) => {
 
   return (
     <AddItemModal title="Add News" onAddItem={onAddItem}>
-      <form onSubmit={onAddItem}>
+      <form>
         <FormControl>
           <Flex flexDir="column" gap="1em">
             <StringInput

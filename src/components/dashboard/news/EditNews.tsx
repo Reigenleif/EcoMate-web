@@ -1,4 +1,4 @@
-import { RouterOutputs, api } from "~/utils/api";
+import { RouterInputs, RouterOutputs, api } from "~/utils/api";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { AddItemModal } from "~/components/item-tooling/AddItemModal";
@@ -23,10 +23,10 @@ type FormValues = z.infer<typeof schema>;
 
 interface EditNewsProps {
   item: RouterOutputs["admin"]["news"]["getNews"][0];
-  updateItemMutation: ReturnType<typeof api.admin.news.updateNews.useMutation>;
+  onUpdateItem: (data: RouterInputs["admin"]["news"]["updateNews"]) => Promise<void>;
 }
 
-export const EditNews = ({ updateItemMutation, item }: EditNewsProps) => {
+export const EditNews = ({ onUpdateItem, item }: EditNewsProps) => {
   const { register, formState, handleSubmit } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -51,7 +51,7 @@ export const EditNews = ({ updateItemMutation, item }: EditNewsProps) => {
       imageUrl = res?.url;
     }
 
-    await updateItemMutation.mutateAsync({
+    await onUpdateItem({
       id: item.id,
       title: data.title,
       content: data.content,
